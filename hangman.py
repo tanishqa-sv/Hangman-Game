@@ -2,6 +2,7 @@ from tkinter import *
 import string
 from string import ascii_uppercase
 import random
+from tkinter import messagebox
 
 window=Tk()
 window.title("Hangman Game")
@@ -12,18 +13,23 @@ word_list=[ "INDIA", "AMERICA", "CHINA", "PAKISTAN", "SRILANKA", "MYANMAR", "NEP
 
 def guess(letter) :
 	global no_of_guesses
-	txt=list(the_word_w_spaces)
-	guessed=list(display_word.get())
-	if (the_word.count(letter)>0):
-		for i in range (len(txt)):
-			if txt[i]==letter:
-				guessed[i]=letter
-				display_word.set("".join(guessed))
-		txtLabel.config(text=display_word.get())
-	else:
-		no_of_guesses+=1
-		imgLabel.config(image=photo[no_of_guesses])
-		
+	if not display_word.get()==the_word_w_spaces and no_of_guesses<6:
+		txt=list(the_word_w_spaces)
+		guessed=list(display_word.get())
+		if (the_word.count(letter)>0):
+			for i in range (len(txt)):
+				if txt[i]==letter:
+					guessed[i]=letter
+					display_word.set("".join(guessed))
+			txtLabel.config(text=display_word.get())
+			if display_word.get()==the_word_w_spaces:
+				messagebox.showinfo("Hangman", "You guessed it!")
+		else:
+			no_of_guesses+=1
+			imgLabel.config(image=photo[no_of_guesses])
+			if no_of_guesses==6:
+				messagebox.showwarning("Hangman","Game Over")
+
 
 imgLabel=Label(window)					#a label for images
 imgLabel.grid(row=0,column=0,columnspan=3,pady=40)			
@@ -47,5 +53,4 @@ for c in ascii_uppercase :
 	n=n+1
 
 window.mainloop()
-
 
